@@ -22,10 +22,12 @@ var classSchema = mongoose.Schema({
 
 var Class = module.exports = mongoose.model('Class', classSchema);
 
-
-
 //method: Fetch all classes
 
 module.exports.getClasses = function (callback, limit) {
     Class.find(callback).limit(limit);
+}
+
+module.exports.getClass = function (id, callback) {
+    Class.findById(id, callback);
 }

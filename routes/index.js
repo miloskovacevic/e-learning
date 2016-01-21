@@ -11,7 +11,12 @@ router.get('/', function(req, res, next) {
     res.render('index', {
         "classes": classes
     });
-  });
+  }, 3);
 });
 
 module.exports = router;
+
+
+
+
+
