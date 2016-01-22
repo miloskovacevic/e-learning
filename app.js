@@ -14,10 +14,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var async = require('async');
+
 
 var routes = require('./routes/index');
 var classes = require('./routes/classes');
-
+var users = require('./routes/users');
 
 var app = express();
 
@@ -68,6 +70,7 @@ app.use(expressValidator({
   }
 }));
 
+
 //Connect-Flash
 app.use(flash());
 
@@ -83,6 +86,8 @@ app.use(function (req, res, next) {
 
 app.use('/', routes);
 app.use('/classes', classes);
+app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -114,6 +119,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

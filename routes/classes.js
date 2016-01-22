@@ -20,8 +20,6 @@ router.get('/:id/details', function (req, res) {
         if(err){
             res.send(err);
         }
-        console.log('========================>>>> TESTIRAMO <<<<==========================');
-        console.log('REZULTAT JE ' + classname);
 
         res.render('classes/single-details', {
             "class": classname

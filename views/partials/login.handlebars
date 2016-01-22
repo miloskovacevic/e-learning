@@ -1,7 +1,8 @@
 <h4>Student & Instructor Login</h4>
-<form>
+<form method="post" action="/users/login">
     <label>Username: </label><br/>
-    <input type="text"/><br/>
+    <input type="text" name="username" /><br/>
     <label>Password: </label><br/>
-    <input type="password"/>
+    <input type="password" name="password" />
+    <input class="button" type="submit" value="Login" />
 </form>
