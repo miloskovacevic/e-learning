@@ -122,7 +122,8 @@ passport.deserializeUser(function (id, done) {
 // login post...
 router.post('/login', passport.authenticate('local', {failureRedirect: '/', failureFlash: 'Wrong Username or Password'}), function (req, res) {
     req.flash('success','You are now logged in');
-    res.redirect('/');
+    var usertype = req.user.type;
+    res.redirect('/' + usertype + 's/classes');
 } );
 
 passport.use(new LocalStrategy(
@@ -158,6 +159,21 @@ passport.use(new LocalStrategy(
         });
     }
 ));
+
+router.get('/logout', function (req, res) {
+    req.logout();
+    req.flash('success', 'You have logged out!');
+    res.redirect('/');
+
+    console.log('you logged out!!!');
+});
+
+function ensureAuthenticated(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/users/login');
+}
 
 module.exports = router;
 

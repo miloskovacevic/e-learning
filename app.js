@@ -20,6 +20,7 @@ var async = require('async');
 var routes = require('./routes/index');
 var classes = require('./routes/classes');
 var users = require('./routes/users');
+var students = require('./routes/students');
 
 var app = express();
 
@@ -53,6 +54,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 //Express Validator
 app.use(expressValidator({
   errorFormatter: function(param, msg, value){
@@ -70,7 +72,6 @@ app.use(expressValidator({
   }
 }));
 
-
 //Connect-Flash
 app.use(flash());
 
@@ -84,10 +85,19 @@ app.use(function (req, res, next) {
   next();
 });
 
+//user objekat da bude vidljiv(global) u svim view-ovima
+app.get('*', function(req, res, next){
+  res.locals.user = req.user || null;
+  if(req.user){
+    res.locals.usertype = req.user.type;
+  }
+  next();
+});
+
 app.use('/', routes);
 app.use('/classes', classes);
 app.use('/users', users);
-
+app.use('/students', students);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
