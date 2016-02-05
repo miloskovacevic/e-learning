@@ -40,6 +40,41 @@ router.post('/classes/register', function (req, res) {
     res.redirect('/instructors/classes');
 });
 
+router.get('/classes/:id/lessons', function (req, res) {
+    var id = req.params.id;
+    Class.getClass(id, function (err, classname) {
+        if(err){
+            res.send(err);
+        }
+
+        res.render('classes/lessons', {
+            "class": classname
+        });
+    })
+});
+
+router.get('/classes/:id/lessons/:lesson_id', ensureAuthenticated, function (req, res) {
+    var id = req.params.id;
+    Class.getClass(id, function (err, classname) {
+        var lesson;
+        if(err){
+            res.send(err);
+        }else{
+            for(i = 0; i < classname.lessons.length; i++){
+                if(classname.lessons[i].lesson_number == req.params.lesson_id){
+                    lesson = classname.lessons[i];
+                }
+            }
+
+            res.render('classes/lesson', {
+                "class": classname,
+                "lesson": lesson
+            });
+        }
+
+    })
+});
+
 
 router.get('/classes/:id/lessons/new', ensureAuthenticated, function (req, res) {
     var id = req.params.id;
@@ -66,7 +101,6 @@ router.post('/classes/:id/lessons/new', ensureAuthenticated, function (req, res)
 
     req.flash('success','Lesson added!');
     res.redirect('/instructors/classes');
-
 
 });
 
