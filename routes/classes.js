@@ -26,6 +26,16 @@ router.get('/:id/details', function (req, res) {
         });
     })
 });
+//
+//router.get('/:id/lessons/new', function (req, res) {
+//    var id = req.params.id;
+//
+//    res.render('instructors/newlesson', {
+//        'class_id': id
+//    });
+//});
+
+
 
 module.exports = router;
 

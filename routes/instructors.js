@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Class = require('./../models/class');
-var Instructor = require('./../models/nstructor');
+var Instructor = require('./../models/instructor');
 var User = require('./../models/user');
 
 
@@ -36,8 +36,38 @@ router.post('/classes/register', function (req, res) {
         console.log(instructor);
     });
 
-    req.flash('success','You are now registered!');
-    res.redirect('/classes');
+    req.flash('success','You are now registered to teach this class!');
+    res.redirect('/instructors/classes');
+});
+
+
+router.get('/classes/:id/lessons/new', ensureAuthenticated, function (req, res) {
+    var id = req.params.id;
+
+    res.render('instructors/newlesson', {
+        'class_id': id
+    });
+});
+
+router.post('/classes/:id/lessons/new', ensureAuthenticated, function (req, res) {
+    var info = [];
+    info['class_id'] = req.params.id;
+    info['lesson_number'] = req.body.lesson_number;
+    info['lesson_title'] = req.body.lesson_title;
+    info['lesson_body'] = req.body.lesson_body;
+
+    Class.addLesson(info, function(err, lesson){
+        if(err) {
+            throw  err;
+        }
+
+        console.log(lesson);
+    });
+
+    req.flash('success','Lesson added!');
+    res.redirect('/instructors/classes');
+
+
 });
 
 function ensureAuthenticated(req, res, next){
@@ -46,6 +76,7 @@ function ensureAuthenticated(req, res, next){
     }
     res.redirect('/users/login');
 }
+
 
 
 module.exports = router;
